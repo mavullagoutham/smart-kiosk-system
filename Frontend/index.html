@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Kiosk</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="screen-loader" id="screenLoader">
+   <div class="dots-loader">
+   <span></span>
+   <span></span>
+   <span></span>
+    </div>
+   <h2>Loading Smart Kiosk...</h2>
+</div>
+
+<div class="container">
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🍔 Smart Kiosk <span class="count-badge" id="cartCount">0</span></h2>
+    <p class="sidebar-subtitle">  Smart Food Ordering  </p>
+    <div class="nav-card" onclick="showSection('dashboard', this)">📊 Dashboard</div>
+    <div class="nav-card" onclick="showSection('menu', this)">🍔 Menu</div>
+    <div class="nav-card" onclick="showSection('cart', this)">🛒 Cart</div>
+    <div class="nav-card" onclick="showSection('orders', this)">📦 Orders</div>
+    <div class="nav-card" onclick="showSection('bill', this)">💳 Billing</div>
+    <div class="nav-card" onclick="showSection('about', this)">ℹ️ About</div>
+    <div class="nav-card" onclick="showSection('contact', this)">📍 Contact </div>
+    <div class="nav-card" onclick="showSection('locations', this)">📍 Locations </div>
+    <div class="nav-card" onclick="showSection('history', this)"> 📜 History </div>
+    <div class="nav-card" onclick="logout()">🚪 Logout </div>
+    <div class="nav-card" onclick="showSection('settings', this)">⚙ System</div>
+ </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="top-clock" id="liveClock"></div>
+    <h1 id="pageTitle">✨ Smart Kiosk Dashboard</h1>
+
+    <div id="cart" class="section">
+      <h2>🛒 Cart (<span id="cartCountDash">0</span>)</h2>
+      <button onclick="placeOrderFromCart()">Place Order</button>
+      <button onclick="clearCart()">Clear Cart</button>
+      <div id="cartItems"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section">
+    <h2>📊 Dashboard</h2>
+    <p class="dashboard-subtitle">  Real-time Smart Food Ordering Analytics </p>
+    <h3 id="welcomeUser"></h3>
+    <div class="dashboard-cards">
+
+        <div class="dash-card">
+            <h3>📦 Total Orders</h3>
+            <p id="totalOrders">0</p>
+        </div>
+
+        <div class="dash-card">
+            <h3>👤 Active Users</h3>
+            <p id="activeUsers">3</p>
+        </div>
+
+        <div class="dash-card">
+            <h3>💰 Total Revenue</h3>
+            <p id="totalRevenue">₹0</p>
+        </div>
+
+        <div class="dash-card">
+            <h3>🛒 Cart Items</h3>
+            <p id="dashboardCartCount">0</p>
+        </div>
+
+    </div>
+
+    <div class="live-status">
+        🟢 System Running Smoothly
+    </div>
+
+</div>
+
+    <!-- MENU -->
+    <div id="menu" class="section">
+      <h2>🔥 Popular Items</h2>
+      <input type="text" id="menuSearch" placeholder="Search food..." onkeyup="searchMenu()"/>
+      <div class="menu-grid" id="menuFull"></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="orders" class="section">
+      <h2>🧾 Orders</h2>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- BILL -->
+    <div id="bill" class="section">
+      <div class="bill-card">
+        <div class="bill-row">
+          <span>Subtotal</span>
+          <span id="subtotalAmount">₹0</span>
+        </div>
+
+        <div class="bill-row">
+          <span>GST (5%)</span>
+          <span id="gstAmount">₹0</span>
+        </div>
+
+        <div class="bill-row total-row">
+          <span>Total</span>
+          <span id="totalAmount">₹0</span>
+        </div>
+        
+        <button class="pay-btn" onclick="showPaymentPopup()"> Proceed to Pay  </button>
+        <div class="bill-icon">💳</div>
+        <div class="payment-methods">
+          <span>💳 Card</span>
+          <span>📱 UPI</span>
+          <span>💵 Cash</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ABOUT -->
+    <div id="about" class="section">
+      <h2>ℹ About Smart Kiosk</h2>
+      <div class="about-card">
+        <p>
+            Smart Kiosk is a modern self-ordering food system
+            designed to provide faster ordering, live billing,
+            and smooth customer experience.
+        </p>
+
+        <div class="about-features">
+          <div class="feature-box">  ⚡ Fast Ordering </div>
+
+          <div class="feature-box">  🤖 AI Assistant  </div>
+
+          <div class="feature-box"> 💳 Smart Billing </div>
+
+          <div class="feature-box">  📦 Live Order Tracking </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div id="history" class="section">
+      <h2>📜 Payment History</h2>
+      <div id="historyList"></div>
+    </div>
+
+    <!-- LOCATIONS -->
+     <div id="locations" class="section">
+      <h2>📍 Nearby Branches</h2>
+
+      <p class="dashboard-subtitle"> Find nearby Smart Kiosk locations </p>
+
+      <div class="location-grid">
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Madhapur+Hyderabad"
+target="_blank"
+>
+          <h3>🍔 Smart Kiosk - Hyderabad</h3>
+          <p>Madhapur, Hyderabad</p>
+        </a>
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Vizag+Smart+Kiosk" target="_blank">
+          <h3>🍕 Smart Kiosk - Vizag</h3>
+          <p>Beach Road, Vizag</p>
+        </a>
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Vijayawada+Smart+Kiosk" target="_blank">
+          <h3>☕ Smart Kiosk - Vijayawada</h3>
+          <p>Benz Circle</p>
+        </a>
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Bangalore+Smart+Kiosk" target="_blank">
+          <h3>🍟 Smart Kiosk - Bangalore</h3>
+          <p>Electronic City</p>
+        </a>
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Chennai+Smart+Kiosk" target="_blank">
+          <h3>🍜 Smart Kiosk - Chennai</h3>
+          <p>T Nagar</p>
+        </a>
+
+        <a class="location-card" href="https://www.google.com/maps/search/?api=1&query=Delhi+Smart+Kiosk" target="_blank">
+          <h3>🥤 Smart Kiosk - Delhi</h3>
+          <p>Connaught Place</p>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+     <div id="settings" class="section">
+
+      <h2>⚙ System Settings</h2>
+
+      <div class="dashboard-cards">
+
+        <div class="dash-card" onclick="toggleTheme()">
+          <h3>🎨 Theme Mode</h3>
+          <p>Light / Dark</p>
+        </div>
+
+        <div class="dash-card">
+          <h3>🟢 Server Status</h3>
+          <p>Online</p>
+        </div>
+
+        <div class="dash-card">
+          <h3>📡 Network</h3>
+          <p>Stable</p>
+        </div>
+
+        <div class="dash-card">
+          <h3>🤖 AI Assistant</h3>
+          <p>Active</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- CONTACT -->
+    <div id="contact" class="section contact">
+    <h2>📍 Contact Us</h2>
+    <div class="contact-card">
+      <iframe src="https://www.google.com/maps?q=restaurant&output=embed"></iframe>
+      <a href="https://maps.google.com" target="_blank">
+          📍 View Nearby Restaurants
+      </a>
+      <p>📧 support@kiosk.com</p>
+      <p>📞 +91 106-3166-895 </p>
+    </div>
+    </div>
+
+    <!-- Chat Box -->
+    <div class="chat-container" id="chatBox">
+    <div class="chat-header">🤖 Smart Assistant</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+        <input type="text" id="query" placeholder="Ask something..." />
+        <button onclick="askAI()">➤</button>
+    </div>
+    </div>
+
+    </div>
+
+    </div>
+
+<!-- Chat -->
+<div class="chat-toggle" onclick="toggleChat()">💬</div>
+<script>
+if(!localStorage.getItem("token")){
+   window.location.href = "login.html";
+}
+</script>
+
+<div class="popup" id="paymentPopup">
+  <div class="popup-card">
+    <div id="paymentLoader">
+      <div class="holo-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h3>Processing Payment...</h3>
+      <p id="paymentText">
+        Initializing secure payment...
+      </p>
+    </div>
+    <div id="paymentSuccess" style="display:none;">
+      <div class="success-check">✔</div>
+      <h2>Payment Successful</h2>
+      <p>Your delicious order is on the way 🚀</p>
+      <p id="popupOrderId"></p>
+      <button onclick="closePopup()">Done</button>
+    </div>
+  </div>
+</div>
+  <div id="festivalPopup" class="festival-popup">
+    🎉 Happy Diwali! Enjoy your food with Smart Kiosk 🍔
+  </div>
+  <script src="script.js"></script>
+  <footer class="footer"> Smart Kiosk © 2026 | All rights reserved </footer>
+</body>
+</html>
