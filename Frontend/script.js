@@ -204,6 +204,7 @@ function showSection(sectionId, element) {
     bill: "💳 Payment Center",
     about: "ℹ About Smart Kiosk",
     contact: "📍 Contact Us",
+    locations: "📍 Nearby Branches",
     settings: "⚙ System Settings",
     history: "📜 Payment History"
 };
